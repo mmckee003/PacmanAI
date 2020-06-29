@@ -97,16 +97,16 @@ def depthFirstSearch(problem):
     # stack holds tuple of state and path to state
     stack.push((startState, []))
     while not stack.isEmpty():
-        currState, currentPath = stack.pop()
+        currState, currPath = stack.pop()
         if currState not in visited:
             visited.add(currState)
             if problem.isGoalState(currState):
-                return currentPath
+                return currPath
             successors = problem.getSuccessors(currState)
             for successor in successors:
                 if successor[0] not in visited:
-                    stack.push((successor[0], currentPath + [successor[1]]))
-    return currentPath
+                    stack.push((successor[0], currPath + [successor[1]]))
+    return currPath
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
@@ -120,16 +120,16 @@ def breadthFirstSearch(problem):
     # queue holds tuple of state and path to state
     queue.push((startState, []))
     while not queue.isEmpty():
-        currState, currentPath = queue.pop()
+        currState, currPath = queue.pop()
         if currState not in visited:
             visited.add(currState)
             if problem.isGoalState(currState):
-                return currentPath
+                return currPath
             successors = problem.getSuccessors(currState)
             for successor in successors:
                 if successor[0] not in visited:
-                    queue.push((successor[0], currentPath + [successor[1]]))
-    return currentPath
+                    queue.push((successor[0], currPath + [successor[1]]))
+    return currPath
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
@@ -143,17 +143,17 @@ def uniformCostSearch(problem):
     # queue holds tuple of state and path to state
     queue.push((startState, []), 0)
     while not queue.isEmpty():
-        currState, currentPath = queue.pop()
+        currState, currPath = queue.pop()
         if currState not in visited:
             visited.add(currState)
             if problem.isGoalState(currState):
-                return currentPath
+                return currPath
             successors = problem.getSuccessors(currState)
             for successor in successors:
                 if successor[0] not in visited:
                     # add child to the queue with priority cost to reach state
-                    queue.push((successor[0], currentPath + [successor[1]]), problem.getCostOfActions(currentPath + [successor[1]]))
-    return currentPath
+                    queue.push((successor[0], currPath + [successor[1]]), problem.getCostOfActions(currPath + [successor[1]]))
+    return currPath
 
 def nullHeuristic(state, problem=None):
     """
@@ -175,19 +175,19 @@ def aStarSearch(problem, heuristic=nullHeuristic):
     # queue holds tuple of state and path to state
     queue.push((startState, []), heuristic(startState, problem))
     while not queue.isEmpty():
-        currState, currentPath = queue.pop()
+        currState, currPath = queue.pop()
         if currState not in visited:
             visited.add(currState)
             if problem.isGoalState(currState):
-                return currentPath
+                return currPath
             successors = problem.getSuccessors(currState)
             for successor in successors:
                 if successor[0] not in visited:
                     # add child to the queue with priority = g(n) + h(n)
-                    g = problem.getCostOfActions(currentPath + [successor[1]])
+                    g = problem.getCostOfActions(currPath + [successor[1]])
                     h = heuristic(successor[0], problem)
-                    queue.push((successor[0], currentPath + [successor[1]]), g + h)
-    return currentPath
+                    queue.push((successor[0], currPath + [successor[1]]), g + h)
+    return currPath
 
 # Abbreviations
 bfs = breadthFirstSearch
