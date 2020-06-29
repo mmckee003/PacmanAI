@@ -88,33 +88,48 @@ def depthFirstSearch(problem):
     """
     "*** YOUR CODE HERE ***"
     
+    # we need to keep track of visited nodes so we don't end up searching same nodes over and over again
     visited = set()
     stack = util.Stack()
 
     # start state
-    state = problem.getStartState()
+    currState = problem.getStartState()
     # stack holds tuple of state and path to state
-    currentPath = []
-    stack.push((state, currentPath))
-    while not problem.isGoalState(state) and not stack.isEmpty():
-        currNode, currentPath = stack.pop()
-        if currNode not in visited:
-            visited.add(currNode)
-            successors = problem.getSuccessors(currNode)
+    stack.push((currState, []))
+    while not stack.isEmpty():
+        currState, currentPath = stack.pop()
+        if currState not in visited:
+            visited.add(currState)
+            if problem.isGoalState(currState):
+                return currentPath
+            successors = problem.getSuccessors(currState)
             for successor in successors:
                 if successor[0] not in visited:
-                    state = successor[0]
-                    action = successor[1]
-                    # add action to current path
-                    stack.push((state, currentPath + [action]))
-    currentPath.append(action)
-    print currentPath
+                    stack.push((successor[0], currentPath + [successor[1]]))
     return currentPath
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    # we need to keep track of visited nodes so we don't end up searching same nodes over and over again
+    visited = set()
+    queue = util.Queue()
+
+    # start state
+    currState = problem.getStartState()
+    # queue holds tuple of state and path to state
+    queue.push((currState, []))
+    while not queue.isEmpty():
+        currState, currentPath = queue.pop()
+        if currState not in visited:
+            visited.add(currState)
+            if problem.isGoalState(currState):
+                return currentPath
+            successors = problem.getSuccessors(currState)
+            for successor in successors:
+                if successor[0] not in visited:
+                    queue.push((successor[0], currentPath + [successor[1]]))
+    return currentPath
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
