@@ -93,9 +93,9 @@ def depthFirstSearch(problem):
     stack = util.Stack()
 
     # start state
-    currState = problem.getStartState()
+    startState = problem.getStartState()
     # stack holds tuple of state and path to state
-    stack.push((currState, []))
+    stack.push((startState, []))
     while not stack.isEmpty():
         currState, currentPath = stack.pop()
         if currState not in visited:
@@ -116,9 +116,9 @@ def breadthFirstSearch(problem):
     queue = util.Queue()
 
     # start state
-    currState = problem.getStartState()
+    startState = problem.getStartState()
     # queue holds tuple of state and path to state
-    queue.push((currState, []))
+    queue.push((startState, []))
     while not queue.isEmpty():
         currState, currentPath = queue.pop()
         if currState not in visited:
@@ -146,8 +146,29 @@ def nullHeuristic(state, problem=None):
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
 
+    # we need to keep track of visited nodes so we don't end up searching same nodes over and over again
+    visited = set()
+    queue = util.PriorityQueue()
+
+    # start state
+    startState = problem.getStartState()
+    # queue holds tuple of state, path to state, and cost to reach currState
+    queue.push((startState, []), heuristic(startState, problem))
+    while not queue.isEmpty():
+        currState, currentPath = queue.pop()
+        if currState not in visited:
+            visited.add(currState)
+            if problem.isGoalState(currState):
+                return currentPath
+            successors = problem.getSuccessors(currState)
+            for successor in successors:
+                if successor[0] not in visited:
+                    # add child to the queue with priority = g(n) + h(n)
+                    g = problem.getCostOfActions(currentPath + [successor[1]])
+                    h = heuristic(successor[0], problem)
+                    queue.push((successor[0], currentPath + [successor[1]]), g + h)
+    return currentPath
 
 # Abbreviations
 bfs = breadthFirstSearch
