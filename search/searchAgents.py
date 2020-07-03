@@ -378,13 +378,7 @@ def cornersHeuristic(state, problem):
     "*** YOUR CODE HERE ***"
     cost = 0
     currPosition = state[0]
-    cornersVisited = state[1]
-    cornersToVisit = []
-
-    # Create a list of corners that have not been visited by the path of this state
-    for i in range(0, len(cornersVisited)):
-        if (not cornersVisited[i]):
-            cornersToVisit.append(corners[i])
+    cornersToVisit = list(state[1])
 
     # find distance to closest unvisited corner, then set that as currPosition and find distance to next closest corner, repeat for all unvisited corners 
     while len(cornersToVisit) > 0:
