@@ -295,14 +295,16 @@ class CornersProblem(search.SearchProblem):
         space)
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        boolCorners = (False, False, False, False)
+        return (self.startingPosition, boolCorners)
 
     def isGoalState(self, state):
         """
         Returns whether this search state is a goal state of the problem.
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        boolCorners = state[1]
+        return boolCorners[0] and boolCorners[1] and boolCorners[2] and boolCorners[3]
 
     def getSuccessors(self, state):
         """
@@ -315,6 +317,7 @@ class CornersProblem(search.SearchProblem):
             is the incremental cost of expanding to that successor
         """
 
+
         successors = []
         for action in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
             # Add a successor state to the successor list if the action is legal
@@ -325,7 +328,22 @@ class CornersProblem(search.SearchProblem):
             #   hitsWall = self.walls[nextx][nexty]
 
             "*** YOUR CODE HERE ***"
-
+            x,y = state[0]
+            dx, dy = Actions.directionToVector(action)
+            nextx, nexty = int(x + dx), int(y + dy)
+            if not self.walls[nextx][nexty]:
+                nextState = (nextx, nexty)
+                corners = state[1]
+                if nextState in self.corners:
+                    if nextState == self.corners[2]:
+                        corners  = (True, corners[1], corners[2], corners[3])
+                    elif nextState == self.corners[3]:
+                        corners = (corners[0], True, corners[2], corners[3])
+                    elif nextState == self.corners[1]:
+                        corners = (corners[0], corners[1], True, corners[3])
+                    elif nextState == self.corners[0]:
+                        corners = (corners[0], corners[1], corners[2], True)
+                successors.append( ( (nextState, corners), action, 1) )
         self._expanded += 1 # DO NOT CHANGE
         return successors
 
