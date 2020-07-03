@@ -334,15 +334,14 @@ class CornersProblem(search.SearchProblem):
             if not self.walls[nextx][nexty]:
                 nextState = (nextx, nexty)
                 corners = state[1]
-                if nextState in self.corners:
-                    if nextState == self.corners[2]:
-                        corners  = (True, corners[1], corners[2], corners[3])
-                    elif nextState == self.corners[3]:
-                        corners = (corners[0], True, corners[2], corners[3])
-                    elif nextState == self.corners[1]:
-                        corners = (corners[0], corners[1], True, corners[3])
-                    elif nextState == self.corners[0]:
-                        corners = (corners[0], corners[1], corners[2], True)
+                if nextState == self.corners[2]:
+                    corners  = (True, corners[1], corners[2], corners[3])
+                elif nextState == self.corners[3]:
+                    corners = (corners[0], True, corners[2], corners[3])
+                elif nextState == self.corners[1]:
+                    corners = (corners[0], corners[1], True, corners[3])
+                elif nextState == self.corners[0]:
+                    corners = (corners[0], corners[1], corners[2], True)
                 successors.append( ( (nextState, corners), action, 1) )
         self._expanded += 1 # DO NOT CHANGE
         return successors
